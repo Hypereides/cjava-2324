@@ -1,6 +1,6 @@
 
 /*Provided code does the following things:
-        Asks the user to enter 2 different values which are assigned to a different variables,
+        Asks the user to enter 2 different values which are assigned to  different variables,
         i) Small bottle count
         ii) Large bottle count
         iii) Calculates the total value of both products
