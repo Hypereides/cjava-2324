@@ -22,7 +22,7 @@ int main()
 
     if (count_small_bottles < 0 || count_large_bottles < 0)
     {
-        printf("Do consider providing a positive number greater or equal to 0 (bottle count)");
+        printf("Do consider providing a positive number greater than or equal to 0 (bottle count)");
     }
     else
     {
