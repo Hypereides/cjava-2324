@@ -2,7 +2,7 @@
 n where n == to the number length is equal to the digit it self )
 
 Basic, for loop including a while loop fetches a number from 1000 = 9999 and compares the sum of each digit to the overall sum of the number 
- ******************************** Right bellow the initial code , within comments i have also
+ ******************************** Right below the initial code , within comments i have also
   included a different version that executes way faster 
 */
 
