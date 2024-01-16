@@ -63,7 +63,27 @@ int main()
         break;
     case '*':
         printf("The result is %d/%d", num2, denum0);
+    case '/':
+        if (operation.op2.ar != 0)
+        {
+            int div_num = operation.op1.ar * operation.op2.par;
+            int div_den = operation.op1.par * operation.op2.ar;
+            for (c = 1; c <= div_num && c <= div_den; ++c)
+            {
+                if (div_num % c == 0 && div_den % c == 0)
+                    gcd = c;
+            }
+            int div_result_num = div_num / gcd;
+            int div_result_den = div_den / gcd;
+            printf("\nThe result is : \n%d/%d / %d/%d = %d/%d", operation.op1.ar, operation.op1.par, operation.op2.ar, operation.op2.par, div_result_num, div_result_den);
+        }
+        else
+        {
+            printf("\nError: Division by zero is not allowed.\n");
+        }
+        break;
     default:
+        printf("\nUnknown operation '%c'.", operation.operator);
         break;
     }
 }
