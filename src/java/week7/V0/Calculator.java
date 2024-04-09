@@ -1,3 +1,4 @@
+package V0;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -14,8 +15,6 @@ public class Calculator implements ActionListener {
     JPanel panel;
     Font myFont = new Font("Helvetica", Font.BOLD, 40);
     Stack<String> stack = new Stack<String>();
-    double n1 = 0,n2 = 0,res = 0;
-    char op;
     int frameWidth = 420;
     int textFieldWidth = 300;
     int xPosition = (frameWidth - textFieldWidth) / 2;
@@ -104,7 +103,7 @@ public class Calculator implements ActionListener {
     }
 
     public static void main(String[] args) {
-        Calculator calculator = new Calculator();
+        new Calculator();
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -112,52 +111,83 @@ public class Calculator implements ActionListener {
         String buttonText = button.getText();
     
         if (buttonText.equals("C")) {
-            textField.setText("");
-            stack.clear();
+            clearTextFieldAndStack();
         } else if (buttonText.equals("DEL")) {
-            String text = textField.getText();
-            if (!text.isEmpty()) {
-                textField.setText(text.substring(0, text.length() - 1));
-            }
+            deleteLastCharacter();
         } else if (buttonText.equals("Enter")) {
-            // When the "Enter" button is clicked, push the current input onto the stack
-            if (!textField.getText().isEmpty()) {
-                stack.push(textField.getText());
-                textField.setText("");
+            pushInputToStack();
+        } else if (buttonText.equals("=")) {
+            if (stack.size() >= 2) {
+                performOperation();
             }
         } else if (buttonText.equals(".")) {
-            textField.setText(textField.getText() + buttonText);
+            appendToTextField(buttonText);
         } else {
-            try {
-                Double.parseDouble(buttonText);
-                textField.setText(textField.getText() + buttonText);
-            } catch (NumberFormatException ex) {
-                // if parsing failed then it is an operator not a number
-                if (stack.size() >= 2) {
-                    double n2 = Double.parseDouble(stack.pop());
-                    double n1 = Double.parseDouble(stack.pop());
-                    switch (buttonText) {
-                        case "+":
-                            stack.push(String.valueOf(n1 + n2));
-                            break;
-                        case "-":
-                            stack.push(String.valueOf(n1 - n2));
-                            break;
-                        case "*":
-                            stack.push(String.valueOf(n1 * n2));
-                            break;
-                        case "/":
-                            if (n2 != 0) {
-                                stack.push(String.valueOf(n1 / n2));
-                            } else {
-                                // Handle division by zero
-                                textField.setText("Error: Division by zero");
-                            }
-                            break;
-                    }
-                    textField.setText(stack.peek());
-                }
+            handleNumberOrOperator(buttonText);
+        }
+    }
+    
+    private void clearTextFieldAndStack() {
+        textField.setText("");
+        stack.clear();
+    }
+    
+    private void deleteLastCharacter() {
+        String text = textField.getText();
+        if (!text.isEmpty()) {
+            textField.setText(text.substring(0, text.length() - 1));
+        }
+    }
+    
+    private void pushInputToStack() {
+        if (!textField.getText().isEmpty()) {
+            stack.push(textField.getText());
+            textField.setText("");
+        }
+    }
+    private void appendToTextField(String text) {
+        textField.setText(textField.getText() + text);
+    }
+    
+    private void handleNumberOrOperator(String buttonText) {
+        try {
+            Double.parseDouble(buttonText);
+            appendToTextField(buttonText);
+        } catch (NumberFormatException ex) {
+            // if parsing failed then it is an operator not a number
+            if (stack.size() >= 2) {
+                performOperation();
+                stack.push(buttonText);
             }
         }
+    }
+    
+    private void performOperation() {
+        if (stack.size() < 3) {
+            return;
+        }
+        String operator = stack.pop();
+        double n2 = Double.parseDouble(stack.pop());
+        double n1 = Double.parseDouble(stack.pop());
+        switch (operator) {
+            case "+":
+                stack.push(String.valueOf(n1 + n2));
+                break;
+            case "-":
+                stack.push(String.valueOf(n1 - n2));
+                break;
+            case "*":
+                stack.push(String.valueOf(n1 * n2));
+                break;
+            case "/":
+                if (n2 != 0) {
+                    stack.push(String.valueOf(n1 / n2));
+                } else {
+                    // Handle division by zero
+                    textField.setText("Error: Division by zero");
+                }
+                break;
+        }
+        textField.setText(stack.peek());
     }
 }
